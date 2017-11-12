@@ -1,0 +1,16 @@
+.thumbnail img{
+    max-height: 150px;
+}
+.thumbnail {
+    border: 2px solid #3872ac;
+}
+
+.container_head {
+    border: 1px solid #3872ac;
+    color: white;
+    font-family: Helvetica, sans-serif;
+}
+.price {
+    font-weight: bold;
+    font-size: 16px;
+}

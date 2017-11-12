@@ -2,6 +2,10 @@
 Thumbs.db
 ehthumbs.db
 
+ShoppingCart/node_modules
+ShoppingCart/.idea
+ShoppingCart/public/images
+
 # Folder config file
 Desktop.ini
 
