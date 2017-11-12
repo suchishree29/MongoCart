@@ -58,3 +58,36 @@ passport.use('local.signup',new LocalStrategy({
         });
     });
 }));
+//Local Strategy for signin
+passport.use('local.signin',new LocalStrategy({
+    usernameField:'email',
+    passwordField: 'password',
+    passReqToCallback: true
+    //done is the var to tell the passport everything is done and working
+},function (req,email,password,done) {
+    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
+    req.checkBody('password', 'Invalid password').notEmpty();
+    var errors = req.validationErrors();
+    if(errors){
+        var messages = [];
+        errors.forEach(function (error) {
+            messages.push(error.msg);
+        });
+        return done(null, false, req.flash('error', messages));
+    }
+    //use the user model to find the user in mongodb and check if user already exist by email
+    User.findOne({'email': email},function (err, user) {
+        //if error, return done with that error
+        if(err){
+            return done(err);
+        }
+        //If i dont get an error but i find the user then return done with no errors , false to tell that there was no error but it was not successful either, so pass the 3rd arg a message
+        if(!user){
+            return done(null, false,{message:'No user found.'});
+        }
+        if(!user.validPassword(password)){
+            return done(null, false,{message:'Wrong Password'});
+        }
+        return done(null, user);
+    });
+}));
