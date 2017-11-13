@@ -43,6 +43,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//setting the global variable 'login' which can be used by other files. Login is a boolean variable set to true, if user is authenticated
+app.use(function(req, res, next) {
+    res.locals.login = req.isAuthenticated();
+    next();
+});
+
 app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();

@@ -15,6 +15,11 @@ router.get('/profile',isLoggedIn, function(req, res, next) {
     res.render('user/profile');
 });
 
+router.get('/logout',isLoggedIn, function(req, res, next) {
+    req.logout();
+    res.redirect('/');
+});
+
 router.use('/',notLoggedIn, function (req,res,next) {
     next();
 });
@@ -40,11 +45,6 @@ router.post('/signin', passport.authenticate('local.signin',{
     failureRedirect:'/user/signin',
     failureFlash: true
 }));
-
-router.get('/logout', function(req, res, next) {
-   req.logout();
-   res.redirect('/');
-});
 
 module.exports = router;
 
