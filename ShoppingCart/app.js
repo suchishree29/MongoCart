@@ -13,6 +13,7 @@ var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 
 var index = require('./routes/index');
+var userRoutes = require('./routes/user');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use('/user', userRoutes);
 app.use('/', index);
 
 app.use(function(req, res, next) {
