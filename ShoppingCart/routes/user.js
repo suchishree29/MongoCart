@@ -11,6 +11,13 @@ var csrfProtection = csrf();
 //All the route included in router should be protected by csrf protection
 router.use(csrfProtection);
 
+router.get('/profile',isLoggedIn, function(req, res, next) {
+    res.render('user/profile');
+});
+
+router.use('/',notLoggedIn, function (req,res,next) {
+    next();
+});
 
 router.get('/signup', function(req, res, next) {
     var messages = req.flash('error');
@@ -39,22 +46,27 @@ router.get('/logout', function(req, res, next) {
    res.redirect('/');
 });
 
-router.get('/profile', function(req, res, next) {
-    res.render('user/profile');
-});
-
 module.exports = router;
 
 //function to protect the routes, that is users who are not logged in should not be allowed to access.
 //use this middleware for all the routes you want to protect.
-// function isLoggedIn(req, res, next) {
-//     //user sessions are automatically managed by passport, if user is loggedin,(isAuthenticated() is set to true), then continue.
-//     if (req.isAuthenticated()){
-//         return next();
-//     }
-//     res.redirect('/');
-//
-// }
+function isLoggedIn(req, res, next) {
+    //user sessions are automatically managed by passport, if user is loggedin,(isAuthenticated() is set to true), then continue.
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/');
+
+}
+
+function notLoggedIn(req, res, next) {
+    //user sessions are automatically managed by passport, if user is loggedin,(isAuthenticated() is set to true), then continue.
+    if (!req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/');
+
+}
 
 
 
