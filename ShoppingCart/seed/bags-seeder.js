@@ -9,7 +9,7 @@ var products = [
     new Product({
 		_id: 100,
         imagePath: "https://s1.postimg.org/9rgb2jbadn/Bag1.jpg",
-        name:"DC Comics Batman with Logo Black Tactical Backpack",
+        name:"DC Comics Batman with Logo Black Tactical Backpack bag",
         price: 60,
         stock: 100,
         categories: ['bags','LaptopBag','black bag','BagPack'],
@@ -45,7 +45,7 @@ var products = [
     new Product({
 		_id: 104,
         imagePath: "https://s1.postimg.org/67udcqa2m3/Bag5.jpg",
-        name:"Roreto School Backpack",
+        name:"Roreto School Backpack bag",
         price: 25,
         stock: 100,
         categories: ['bags','School Bag','yellow bag','kids'],
@@ -54,7 +54,7 @@ var products = [
     new Product({
 		_id: 105,
         imagePath: "https://s1.postimg.org/51b244ldqj/Bag6.jpg",
-        name:"Lego Batman Full Size 16 inch DC Comics School Backpack",
+        name:"Lego Batman Full Size 16 inch DC Comics School Backpack bag",
         price: 20,
         stock: 100,
         categories: ['bags','School Bag','blue bag','kids'],
@@ -63,7 +63,7 @@ var products = [
 	    new Product({
 		_id: 106,
         imagePath: "https://s1.postimg.org/60r5han2bf/Bag7.jpg",
-        name:"Laptop black Backpack",
+        name:"Laptop black bag Backpack",
         price: 53,
         stock: 100,
         categories: ['bags','LaptopBag','black bag'],
@@ -90,7 +90,7 @@ var products = [
 	    new Product({
 		_id: 109,
         imagePath: "https://s1.postimg.org/8oglrnhlnv/Bag10.jpg",
-        name:"Travel Backpack",
+        name:"Travel Backpack Bag",
         price: 65,
         stock: 100,
         categories: ['bags','Travel Bag','black bag','Men','Women'],
@@ -117,7 +117,7 @@ var products = [
 		new Product({
 		_id: 112,
         imagePath: "https://s1.postimg.org/3noj03djgb/Bag13.jpg",
-        name:"DC Comics Batman Black Backpack with Black Bat Logo",
+        name:"DC Comics Batman Black Backpack bag with Black Bat Logo",
         price: 56,
         stock: 100,
         categories: ['bags','Backpack','black bag','Women','Men'],
@@ -144,7 +144,7 @@ var products = [
         new Product({
 		_id: 115,
         imagePath: "https://s1.postimg.org/6wnmwqzbcr/Bag16.jpg",
-        name:"DC Comics Batman Envelope Purse, Clutch, Chain Strap",
+        name:"DC Comics Batman Envelope Purse, Clutch, Chain Strap Bag",
         price: 24,
         stock: 100,
         categories: ['bags','Sling Bag','Golden black bag','Women'],

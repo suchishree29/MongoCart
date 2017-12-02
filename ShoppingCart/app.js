@@ -19,9 +19,9 @@ var app = express();
 
 
 mongoose.connect('localhost:27017/shoppingcart');
-require('./config/passport')
+require('./config/passport');
 // view engine setup
-app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}))
+app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
 // uncomment after placing your favicon in /public
@@ -44,12 +44,9 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //setting the global variable 'login' which can be used by other files. Login is a boolean variable set to true, if user is authenticated
+//make session available to other modules
 app.use(function(req, res, next) {
     res.locals.login = req.isAuthenticated();
-    next();
-});
-
-app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
 });
