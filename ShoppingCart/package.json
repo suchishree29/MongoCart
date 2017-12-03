@@ -24,10 +24,7 @@
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-<<<<<<< HEAD
-=======
     "save": "^2.3.1",
->>>>>>> origin/master
     "serve-favicon": "~2.4.5"
   }
 }
