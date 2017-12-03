@@ -1,9 +1,6 @@
 /**
  * Created by Suchishree Jena on 11/29/2017.
  */
-/**
- * Created by Suchishree Jena on 11/29/2017.
- */
 
 //Path to Gallery: https://postimg.org/gallery/144j7lhj0/
 //https://postimg.org/gallery/144j7lhj0/17892377/
