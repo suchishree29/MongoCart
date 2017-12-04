@@ -21,10 +21,7 @@
 }
 .container_head {
     border: 1px solid black;
-    color: black;
-    width:1200px;
-    margin-left: auto;
-    padding: 16px;
+    color: white;
     font-family: Helvetica, sans-serif;
 }
 

@@ -19,9 +19,18 @@ router.get('/', function(req, res, next) {
 
 router.get('/getAllProducts', function(req, res, next) {
     Product.find(function (err,docs) {
+        console.log(docs);
         res.send(docs);
     });
 });
+
+router.get('/getAllProducts', function(req, res, next) {
+    Product.find(function (err,docs) {
+        console.log(docs);
+        res.send(docs);
+    });
+});
+
 
 router.get('/product/:id', function(req, res, next) {
     console.log("*********In getProduct By Id function ***********");
@@ -113,28 +122,32 @@ router.get('/search/:text', function(req, res, next) {
     });
 });
 
+// router.get('/add-to-cart/:id',function (req,res,next) {
+//   var productId = req.params.id;
+//   var cart = new Cart(req.session.cart ? req.session.cart : {});
+
+//   Product.findById(productId, function (err,product) {
+//       if (err){
+//         return res.redirect('/');
+//       }
+//       cart.add(product, product.id);
+//       req.session.cart = cart;
+//       console.log(req.session.cart);
+//       res.redirect('/');
+//   });
+// });
+
+
+
+// router.get('/shopping-cart', function (req,res,next) {
+//     if(!req.session.cart){
+//         return res.render('shop/shopping-cart', {products: null});
+//     }
+//     var cart = new Cart(req.session.cart);
+//     res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
+// });
+
 router.get('/add-to-cart/:id',function (req,res,next) {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
-
-  Product.findById(productId, function (err,product) {
-      if (err){
-        return res.redirect('/');
-      }
-      cart.add(product, product.id);
-      req.session.cart = cart;
-      console.log(req.session.cart);
-      res.redirect('/');
-  });
 });
 
-
-
-router.get('/shopping-cart', function (req,res,next) {
-    if(!req.session.cart){
-        return res.render('shop/shopping-cart', {products: null});
-    }
-    var cart = new Cart(req.session.cart);
-    res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
-});
 module.exports = router;
