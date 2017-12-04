@@ -24,13 +24,24 @@ router.get('/getAllProducts', function(req, res, next) {
     });
 });
 
-router.get('/getAllProducts', function(req, res, next) {
-    Product.find(function (err,docs) {
-        console.log(docs);
-        res.send(docs);
+router.post('/trendingProducts', function(req, res, next) {
+    var productId = [];
+   // console.log("**********In trending",req.body.hasOwnProperty(pid));
+    productId = req.body.id;
+    Product.find({
+        '_id': {$in: productId}
+    },
+    function (err,docs) {
+      var productChunks = [];
+      var chunkSize = 3;
+      for(var i =0; i< docs.length; i +=chunkSize){
+        productChunks.push(docs.slice(i,i + chunkSize));
+      }
+      //console.log(docs);
+      res.send(docs);
+        //res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
     });
-});
-
+  });
 
 router.get('/product/:id', function(req, res, next) {
     console.log("*********In getProduct By Id function ***********");
@@ -44,7 +55,7 @@ router.get('/product/:id', function(req, res, next) {
         else{
             console.log(docs);
             selectedProduct = docs;
-/*//backend call
+/* backend call
             var post_options = {
                 host: 'http://10.250.4.149',
                 port: '3000',

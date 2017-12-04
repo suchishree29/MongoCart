@@ -21,6 +21,11 @@
 }
 .container_head {
     border: 1px solid black;
+    color: white;
+    font-family: Helvetica, sans-serif;
+}
+.container_trending {
+    border: 1px solid black;
     color: black;
     width:1200px;
     margin-left: auto;
