@@ -3,19 +3,70 @@ var router = express.Router();
 var http = require('http');
 var Cart = require('../models/cart');
 var Product = require('../models/product');
-var recommendations;
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  Product.find(function (err,docs) {
+    var trendingChunks = [];
     var productChunks = [];
+  Product.find(function (err,docs) {
+
     var chunkSize = 3;
     for(var i =0; i< docs.length; i +=chunkSize){
       productChunks.push(docs.slice(i,i + chunkSize));
     }
-    //console.log(docs);
-      res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
-  });
+
+    var productId = [];
+    
+     var options = {
+       hostname: 'ec2-52-38-92-39.us-west-2.compute.amazonaws.com',
+       port: 8080,
+       path: '/activity/useractivity/trend',
+       method: 'GET'
+     };
+     var request = http.get(options, function(response) {
+    
+     // Buffer the body entirely for processing as a whole.
+     var bodyChunks = [];
+     response.on('data', function(chunk) {
+       // You can process streamed parts here...
+       bodyChunks.push(chunk);
+     }).on('end', function() {
+       var body = Buffer.concat(bodyChunks);
+       var p = JSON.parse(body);
+       //console.log('BODY: ' + JSON.parse(body));
+       //console.log(p.id[0]);
+       productId = p.id;
+
+       //console.log(productId);
+
+       Product.find({
+           '_id': {$in: productId}
+       },
+       function (err,prod) {
+         var chunkSize = 3;
+         for(var i =0; i< prod.length; i +=chunkSize){
+            trendingChunks.push(prod.slice(i,i + chunkSize));
+         }
+         //console.log(docs);
+         //res.json(trendingChunks);
+        //res.render('shop/index', { title: 'Shopping Cart', products: productChunks , trendingp: trendingChunks});
+       });
+
+    
+        console.log(trendingChunks);
+        res.render('shop/index', { title: 'Shopping Cart', products: productChunks , trendingp: trendingChunks});
+        })
+    });
 });
+  
+});
+
+
+
+
+
+
 
 
 router.get('/getAllProducts', function(req, res, next) {
@@ -25,24 +76,57 @@ router.get('/getAllProducts', function(req, res, next) {
     });
 });
 
-router.post('/trendingProducts', function(req, res, next) {
-    //var productId = [100,101,102];
-   // console.log("**********In trending",req.body.hasOwnProperty(pid));
-    productId = req.body.id;
-    Product.find({
-        '_id': {$in: productId}
-    },
-    function (err,docs) {
-      var productChunks = [];
-      var chunkSize = 3;
-      for(var i =0; i< docs.length; i +=chunkSize){
-        productChunks.push(docs.slice(i,i + chunkSize));
-      }
-      //console.log(docs);
-      res.send(docs);
-        //res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
+router.get('/trending', function(req, res, next) {
+    
+        // suggestProducts2();
+    
+         var productId = [];
+        
+         var http = require("http");
+         var options = {
+           hostname: 'ec2-52-38-92-39.us-west-2.compute.amazonaws.com',
+           port: 8080,
+           path: '/activity/useractivity/trend',
+           method: 'GET'
+         };
+         var request = http.get(options, function(response) {
+        
+         // Buffer the body entirely for processing as a whole.
+         var bodyChunks = [];
+         response.on('data', function(chunk) {
+           // You can process streamed parts here...
+           bodyChunks.push(chunk);
+         }).on('end', function() {
+           var body = Buffer.concat(bodyChunks);
+           var p = JSON.parse(body);
+           //console.log('BODY: ' + JSON.parse(body));
+           console.log(p.id[0]);
+           productId = p.id;
+    
+           console.log(productId);
+    
+           Product.find({
+               '_id': {$in: productId}
+           },
+           function (err,docs) {
+             var productChunks = [];
+             var chunkSize = 3;
+             for(var i =0; i< docs.length; i +=chunkSize){
+               productChunks.push(docs.slice(i,i + chunkSize));
+             }
+             //console.log(docs);
+             //res.send(docs);
+            res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
+           });
+
+         })
+       });
+    
+       request.on('error', function(e) {
+         console.log('ERROR: ' + e.message);
     });
-  });
+    
+});
 
 router.get('/product/:id', function(req, res, next) {
     var productId = req.params.id;
@@ -94,6 +178,7 @@ function suggestProducts(selectedProduct,res,callback){
       request.write(JSON.stringify(selectedProduct))
       request.end();
 }
+
 //Search by Category
 router.get('/searchCategory/:category', function(req, res, next) {
     var category = req.params.category;

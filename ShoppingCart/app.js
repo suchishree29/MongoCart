@@ -32,7 +32,7 @@ mongoose.connect('localhost:27017/shoppingcart');
 //         console.log("Connected");
 //     }
 // });
-//mongoose.connect('mongodb://13.57.131.238:27017,13.57.134.28:27017,52.53.74.190:27017/shoppingcart?replicaSet=rs0');
+//mongoose.connect('mongodb://13.57.131.238:27017,13.57.134.28:27017,52.53.74.190:27017/shoppingcart?replicaSet=rs0',{useMongoClient:true});
 //mongoose.connect('mongodb://34.215.102.31:27017,52.88.114.112:27017,54.70.234.254:27017/shoppingcart?replicaSet=rs0',{useMongoClient:true});
 
 // mongoose.connect('mongodb://13.57.131.238:27017/shoppingcart?replicaSet=rs0',{useMongoClient:true}, function(err, db){
