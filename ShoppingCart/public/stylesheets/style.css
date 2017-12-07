@@ -10,13 +10,14 @@
 }
 
 .desccontainer {
-    width: 900px;
+    width: 1200px;
     padding: 16px;
-    height:500px;
+    height:700px;
     margin-right: auto;
     margin-left: auto;
     border: 3px solid #3872ac;
     margin-top: 45px;
+    margin-bottom: 45px;
     font-family: Helvetica, sans-serif;
 }
 .container_head {
