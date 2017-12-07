@@ -12,7 +12,7 @@
 .desccontainer {
     width: 1200px;
     padding: 16px;
-    height:700px;
+    height: 400px;
     margin-right: auto;
     margin-left: auto;
     border: 3px solid #3872ac;
@@ -30,7 +30,7 @@
     color: black;
     width:1200px;
     margin-left: auto;
-    padding: 16px;
+    padding: 14px;
     font-family: Helvetica, sans-serif;
 }
 
