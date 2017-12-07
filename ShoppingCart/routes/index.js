@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
     }
     //trending Products
     var productId = [];
-    
+
      var options = {
        hostname: 'ec2-52-38-92-39.us-west-2.compute.amazonaws.com',
        port: 8080,
@@ -26,13 +26,13 @@ router.get('/', function(req, res, next) {
        method: 'GET'
      };
      var request = http.get(options, function(response) {
-    
+
             // Buffer the body entirely for processing as a whole.
             var bodyChunks = [];
             response.on('data', function(chunk) {
             // You can process streamed parts here...
             bodyChunks.push(chunk);
-            }).on('end', 
+            }).on('end',
             function() {
                 var body = Buffer.concat(bodyChunks);
                 var p = JSON.parse(body);
@@ -51,7 +51,7 @@ router.get('/', function(req, res, next) {
                 //Recently viewed Products
                 var recentProductId = [];
                 var hit = '/activity/useractivity/products?email=' + 'sadabq'
-                
+
                 var options = {
                    hostname: 'ec2-52-38-92-39.us-west-2.compute.amazonaws.com',
                    port: 8080,
@@ -59,18 +59,18 @@ router.get('/', function(req, res, next) {
                    method: 'GET'
                 };
                 var request = http.get(options, function(response) {
-                
+
                         // Buffer the body entirely for processing as a whole.
                         var bodyChunks = [];
                         response.on('data', function(chunk) {
                         // You can process streamed parts here...
                         bodyChunks.push(chunk);
-                        }).on('end', 
+                        }).on('end',
                         function() {
                             var body = Buffer.concat(bodyChunks);
                             var p = JSON.parse(body);
                             recentProductId = p.id;
-            
+
                             Product.find({
                                 '_id': {$in: recentProductId}
                             },
@@ -87,7 +87,7 @@ router.get('/', function(req, res, next) {
             })
         });
     });
-  
+
 });
 
 
@@ -130,7 +130,7 @@ router.get('/product/:id', function(req, res, next) {
                 }
            });
         }
-        
+
     });
 });
 function suggestProducts(selectedProduct,res,callback){
@@ -159,6 +159,39 @@ function suggestProducts(selectedProduct,res,callback){
       request.end();
 }
 
+function addCart(selectedProduct,res,callback){
+  console.log("Inside callProducts Function");
+
+    var emailId = '/cart/' +  'sadabqtest';
+  var http = require("http");
+  var options = {
+    hostname: '13.56.77.198',
+    port: 3000,
+    path: emailId,
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+  };
+
+  var request = http.request(options, function(response) {
+   // console.log('Status: ' + res.statusCode);
+   // console.log('Headers: ' + JSON.stringify(res.headers));
+    response.setEncoding('utf8');
+    response.on('data', function (body) {
+      console.log('Body: ' + body)
+    //  res.writeHead(200, {'content-type' : 'application/json'})
+    //  res.end(body)
+    });
+  });
+  request.on('error', function(e) {
+    console.log('problem with request: ' + e.message);
+  });
+  // write data to request body
+  request.write(JSON.stringify(selectedProduct));
+  request.end();
+}
+
 function logProducts(selectedProduct,res,callback){
     console.log("Inside callProducts Function");
     var http = require("http");
@@ -178,8 +211,8 @@ function logProducts(selectedProduct,res,callback){
   	  response.setEncoding('utf8');
   	  response.on('data', function (body) {
   	    console.log('Body: ' + body)
-  	    res.writeHead(200, {'content-type' : 'application/json'})
-  	    res.end(body)
+  	   // res.writeHead(200, {'content-type' : 'application/json'})
+  	   // res.end(body)
   	  });
   	});
   	request.on('error', function(e) {
@@ -239,30 +272,125 @@ router.get('/search/:text', function(req, res, next) {
     });
 });
 
+// router.get('/add-to-cart/:id',function (req,res,next) {
+//   var productId = req.params.id;
+//   var cart = new Cart(req.session.cart ? req.session.cart : {});
+//
+//   Product.findById(productId, function (err,product) {
+//       if (err){
+//         return res.redirect('/');
+//       }
+//       cart.add(product, product.id);
+//       req.session.cart = cart;
+//       console.log(req.session.cart);
+//       res.redirect('/');
+//   });
+// });
+
 router.get('/add-to-cart/:id',function (req,res,next) {
   var productId = req.params.id;
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-  Product.findById(productId, function (err,product) {
-      if (err){
-        return res.redirect('/');
-      }
-      cart.add(product, product.id);
-      req.session.cart = cart;
-      console.log(req.session.cart);
-      res.redirect('/');
-  });
+  var emailId = '/cart/' +  'sadabqtest';
+
+  var cart;
+
+  var http = require("http");
+  var options = {
+    hostname: '13.56.77.198',
+    port: 3000,
+    path: emailId,
+    method: 'GET'
+  };
+  console.log('Heloo der');
+  var request = http.get(options, function(response) {
+//     localStorage.setItem("lastname", "Smith");
+
+
+  // Buffer the body entirely for processing as a whole.
+  var bodyChunks = [];
+  response.on('data', function(chunk) {
+    // You can process streamed parts here...
+    bodyChunks.push(chunk);
+  }).on('end', function() {
+    var body = Buffer.concat(bodyChunks);
+     console.log('BODY: ' + body);
+    var p = JSON.parse(body);
+    cart = new Cart(p);
+    console.log('BODY: ' + p);
+
+    Product.findById(productId, function (err,product) {
+        if (err){
+          return res.redirect('/');
+        }
+        cart.add(product, product.id);
+
+        addCart(cart,res,function(data){
+          console.log("DATA IS " + data);
+      });
+
+      //  req.session.cart = cart;
+    //    console.log(req.session.cart);
+        res.redirect('/');
+    });
+  // res.send(p);
+
+  })
+});
+
+request.on('error', function(e) {
+  console.log('ERROR: ' + e.message);
+});
+
+//  console.log(req.session.cart);
+
+
 });
 
 
 
+// router.get('/shopping-cart', function (req,res,next) {
+//     if(!req.session.cart){
+//         return res.render('shop/shopping-cart', {products: null});
+//     }
+//     var cart = new Cart(req.session.cart);
+//     res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
+// });
 router.get('/shopping-cart', function (req,res,next) {
-    if(!req.session.cart){
-        return res.render('shop/shopping-cart', {products: null});
-    }
-    var cart = new Cart(req.session.cart);
-    res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
+
+  //var cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  var emailId = '/cart/' +  'sadabqtest';
+
+  var http = require("http");
+  var options = {
+    hostname: '13.56.77.198',
+    port: 3000,
+    path: emailId,
+    method: 'GET'
+  };
+  console.log('Heloo der');
+  var request = http.get(options, function(response) {
+  var bodyChunks = [];
+  response.on('data', function(chunk) {
+
+    bodyChunks.push(chunk);
+  }).on('end', function() {
+    var body = Buffer.concat(bodyChunks);
+     console.log('BODY: ' + body);
+    var p = JSON.parse(body);
+    console.log('BODY: ' + p);
+    var cart = new Cart(p);
+  // res.send(p);
+  res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
+  })
 });
+
+request.on('error', function(e) {
+  console.log('ERROR: ' + e.message);
+});
+
+});
+
 
 router.get('/add-to-cart/:id',function (req,res,next) {
 });
