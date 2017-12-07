@@ -391,8 +391,4 @@ request.on('error', function(e) {
 
 });
 
-
-router.get('/add-to-cart/:id',function (req,res,next) {
-});
-
 module.exports = router;

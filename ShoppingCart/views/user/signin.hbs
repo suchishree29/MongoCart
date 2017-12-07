@@ -11,15 +11,43 @@
         <form action="/user/signin" method="post">
             <div class="form-group">
                 <label for="email">E-Mail</label>
-                <input type="text" id="email" name="email" class="form-control">
+                <input id="email" type="text" id="email" name="email" class="form-control">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <button type="submit" class="btn btn-success">Login</button>
+            <button type="submit" id="loginbtn" class="btn btn-success" onclick="setvalue()">Login</button>
 
         </form>
     </div>
 </div>
+
+
+<script>
+
+function setvalue(){
+    var today = new Date();
+    var expiry = new Date(today.getTime() + 30 * 24 * 3600 * 1000);
+
+    putCookie();
+
+        function setCookie(name, value)
+        {
+            document.cookie=name + "=" + escape(value) + "; path=/; expires=" + expiry.toGMTString();
+        }
+        function putCookie()
+                        //this should set the UserName cookie to the proper value;
+        {
+            var useremail = document.getElementById("email").value;
+            console.log("useremail",useremail);
+            localStorage.setItem("email", useremail);
+            sessionStorage.setItem("email" , useremail);
+        setCookie("userEmail", useremail);
+
+            return true;
+        }
+}
+
+</script>
